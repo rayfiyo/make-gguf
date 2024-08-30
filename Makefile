@@ -2,7 +2,7 @@
 
 IMAGE = gguf-image
 CONTAINER = gguf-container
-REPO = https://github.com/ggerganov/llama.cpp.git
+REPO = https://huggingface.co/tokyotech-llm/Llama-3-Swallow-70B-v0.1
 MODEL = Llama-3-Swallow-70B-v0.1
 
 #
