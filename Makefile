@@ -4,11 +4,12 @@ IMAGE = gguf-image
 CONTAINER = gguf-container
 REPO = https://huggingface.co/tokyotech-llm/Llama-3-Swallow-70B-v0.1
 MODEL = Llama-3-Swallow-70B-v0.1
+CONVERT_FILE = convert_hf_to_gguf.py
 
 #
 
 build:
-	docker build -t $(IMAGE) --build-arg REPO=$(REPO) --build-arg MODEL=$(MODEL) --quiet .
+	docker build -t $(IMAGE) --build-arg REPO=$(REPO) --build-arg MODEL=$(MODEL) --build-arg CONVERT=$(CONVERT_FILE) --quiet .
 
 run:
 	docker run -d --name $(CONTAINER) $(IMAGE)

@@ -2,6 +2,7 @@ FROM debian:12-slim
 
 ARG REPO=${REPO}
 ARG MODEL=${MODEL}
+ARG CONVERT=${CONVERT}
 
 RUN apt update -y &&\
     apt upgrade &&\
@@ -18,4 +19,4 @@ RUN apt update -y &&\
     . /venv/bin/activate &&\
     python3 -m pip install numpy && \
     python3 -m pip install -r /llama.cpp/requirements.txt && \
-    python3 /llama.cpp/convert_hf_to_gguf.py /models/${MODEL}/ --outtype f16 --outfile /models/${MODEL}-f16.gguf
+    python3 /llama.cpp/${CONVERT} /models/${MODEL}/ --outtype f16 --outfile /models/${MODEL}-f16.gguf
