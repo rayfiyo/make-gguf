@@ -1,7 +1,7 @@
 FROM debian:12-slim
 
-ENV REPO=${REPO}
-ENV MODEL=${MODEL}
+ARG REPO=${REPO}
+ARG MODEL=${MODEL}
 
 RUN apt update -y &&\
     apt upgrade &&\
