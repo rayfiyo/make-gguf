@@ -1,15 +1,20 @@
-.PHONY: build run exec init start	stop clean rmi clean-all
+.PHONY: build run copy exec init	stop clean rmi clean-all
 
-CONTAINER = gguf-container
 IMAGE = gguf-image
+CONTAINER = gguf-container
+REPO = https://github.com/ggerganov/llama.cpp.git
+MODEL = Llama-3-Swallow-70B-v0.1
 
 #
 
 build:
-	docker build -t $(IMAGE) --quiet .
+	docker build -t $(IMAGE) --build-arg REPO=$(REPO) --build-arg MODEL=$(MODEL) --quiet .
 
 run:
-	docker run -d -p 11434:11434 --name $(CONTAINER) $(IMAGE)
+	docker run -d --name $(CONTAINER) $(IMAGE)
+
+copy:
+	docker cp $(CONTAINER):/models/$(MODEL)-f16.gguf .
 
 exec:
 	docker exec -it $(CONTAINER) bash
@@ -17,11 +22,7 @@ exec:
 init:
 	@make --no-print-directory build
 	@make --no-print-directory run
-	@make --no-print-directory exec
-
-start:
-	@make --no-print-directory run
-	@make --no-print-directory exec
+	@make --no-print-directory copy
 
 #
 

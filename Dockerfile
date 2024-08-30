@@ -1,16 +1,21 @@
 FROM debian:12-slim
-RUN	apt update -y &&\
+
+ENV REPO=${REPO}
+ENV MODEL=${MODEL}
+
+RUN apt update -y &&\
     apt upgrade &&\
-    apt install -y git python3 make pip &&\
+    apt install -y git git-lfs python3 make pip python3.11-venv &&\
     git clone https://github.com/ggerganov/llama.cpp.git &&\
     cd llama.cpp &&\
     make &&\
     mkdir /models &&\
     cd /models &&\
     git lfs install &&\
-    git clone https://huggingface.co/tokyotech-llm/Llama-3-Swallow-70B-v0.1 &&\
+    git clone ${REPO} &&\
     cd / &&\
     python3 -m venv venv &&\
-    source venv/bin/activate &&\
-    python -m pip install -r /llama.cpp/requirements.txt &&\
-    python /llama.cpp/convert_hf_to_gguf.py /models/Llama-3-Swallow-8B-Instruct-v0.1/ --outtype f16 --outfile /models/Llama-3-Swallow-8B-Instruct-v0.1-f16.gguf
+    . /venv/bin/activate &&\
+    python3 -m pip install numpy && \
+    python3 -m pip install -r /llama.cpp/requirements.txt && \
+    python3 /llama.cpp/convert_hf_to_gguf.py /models/${MODEL}/ --outtype f16 --outfile /models/${MODEL}-f16.gguf
